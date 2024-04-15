@@ -14,33 +14,6 @@
 //CAN socket
 int s;
 
-int getCANFrameData(struct canfd_frame* frame){
-
-    for (int i; i < sizeof(frame); i++){
-        printf("%d", frame->data[0]);
-    }
-    return 0;
-}
-
-struct canfd_frame* readCANFrame (){
-
-    struct canfd_frame* frame;
-
-    int nbytes = read(s, &frame, sizeof(frame));
-
-    if (nbytes < 0) {
-            perror("can raw socket read");
-    }
-
-    /* paranoid check ... */
-    if (nbytes < sizeof(frame)) {
-            fprintf(stderr, "read: incomplete CAN frame\n");
-    }
-
-    return frame;
-
-}
-
 int main (int argc, char *argv[]){
 
     //open can socket 
@@ -66,7 +39,24 @@ int main (int argc, char *argv[]){
     }
 
     //main logic
-    getCANFrameData(readCANFrame());
+    struct can_frame frame;
+    int nbytes;
+
+    nbytes = read(s, &frame, sizeof(struct can_frame));
+
+    if (nbytes < 0) {
+            perror("can raw socket read");
+            return 1;
+    }
+
+    if (nbytes < sizeof(frame)) {
+            fprintf(stderr, "read: incomplete CAN frame\n");
+    }
+
+    //parse frame
+    for (int i = 0; i < frame.can_dlc; i++){
+        printf("Temperature channel %d: %d\n", i + 1, frame.data[i]);
+    }
 
     return 0;
 }

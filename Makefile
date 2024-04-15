@@ -1,20 +1,19 @@
-CC ?= gcc
-PKGCONFIG = $(shell which pkg-config)
-CFLAGS = $(shell $(PKGCONFIG) --cflags gtk+-3.0)
-LIBS = $(shell $(PKGCONFIG) --libs gtk+-3.0)
+# Compiler to use
+CC = gcc
 
-SRC = reader.c
+# Compiler flags
+CFLAGS = -Wall -Wextra -O2
 
-OBJS = $(SRC:.c=.o)
+# Source files
+SOURCES = reader.c
 
-all: reader
+# Executable name
+EXECUTABLE = reader
 
-%.o: %.c
-	$(CC) -c -o $(@F) $(CFLAGS) $<
+all: $(EXECUTABLE)
 
-logger: $(OBJS)
-	$(CC) -o $(@F) $(LIBS) $(OBJS)
+$(EXECUTABLE): $(SOURCES)
+	$(CC) $(CFLAGS) -o $(EXECUTABLE) $(SOURCES)
 
 clean:
-	rm -f $(OBJS)
-	rm -f reader
+	rm -f $(EXECUTABLE)

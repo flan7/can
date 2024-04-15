@@ -1,5 +1,5 @@
 sudo modprobe vcan
 sudo ip link add dev vcan0 type vcan
+echo "Interface Created"
 sudo ip link set vcan0 up
-candump -tz vcan0
-cansend vcan0 "123#00FFAA5501020304"
+echo "Interface vcan0 Up"
