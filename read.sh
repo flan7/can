@@ -1,0 +1,1 @@
+candump -tz vcan0
