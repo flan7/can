@@ -6,6 +6,7 @@ Instructions:
 ```
 chmod +x reader
 chmod +x send.sh
+chmod +x setup.sh
 ./setup.sh
 ```
 
